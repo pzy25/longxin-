@@ -11,6 +11,12 @@ myWidget::myWidget(QWidget *parent)
     initDB();
     InitMQTT();
 
+    QPixmap backgroundPixmap(":/prefix1/images1.jpg");
+       QPalette palette;
+       palette.setBrush(QPalette::Background, QBrush(backgroundPixmap.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+       ui->page->setAutoFillBackground(true);
+       ui->page->setPalette(palette);
+
     connect(ui->addButton,&QPushButton::clicked,this,&myWidget::addButton_clicked);
     connect(ui->deleteButton,&QPushButton::clicked,this,&myWidget::deleteButton_clicked);
 

@@ -40,6 +40,7 @@ private slots:
 
     void startButton_clicked();
     void stopButton_clicked();
+    void setupButton_clicked();
     void dataReceivedVideo();
     void dataProcessVideo();
 

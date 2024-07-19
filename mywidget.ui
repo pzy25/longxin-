@@ -98,6 +98,24 @@
       <string>添加书籍</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="setupButton">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>190</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>书籍复位</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="page_2">
     <widget class="QGroupBox" name="groupBox">

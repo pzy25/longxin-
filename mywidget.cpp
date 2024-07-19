@@ -33,6 +33,7 @@ myWidget::myWidget(QWidget *parent)
 
     connect(ui->startButton,&QPushButton::clicked,this,&myWidget::startButton_clicked);
     connect(ui->stopButton,&QPushButton::clicked,this,&myWidget::stopButton_clicked);
+    connect(ui->setupButton,&QPushButton::clicked,this,&myWidget::setupButton_clicked);
 
 }
 
@@ -195,6 +196,21 @@ void myWidget::stopButton_clicked()
     stopvideo();
     ui->startButton->setEnabled(true);
     ui->stopButton->setEnabled(false);
+}
+
+void myWidget::setupButton_clicked()
+{
+    for (int row = 0; row < model->rowCount(); ++row)
+        {
+            QModelIndex correctIndex = model->index(row, 3);
+            model->setData(correctIndex, "对");
+        }
+
+        if (!model->submitAll())
+        {
+            qDebug() << "Failed to update all records:" << model->lastError();
+        }
+        model->select();
 }
 
 void myWidget::dataReceivedVideo()

@@ -290,6 +290,10 @@ void myWidget::recvMessageSlot(QMQTT::Message message)
                 qDebug() << "Angle value:" << angle;
                 ui->agLineEdit->setText(angle);
             }
+            else if(payloadString == "Off"||payloadString == "off")
+            {
+                ui->setupButton->clicked();
+            }
        }
        else if (message.topic() == "location")
        {

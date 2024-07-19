@@ -12,6 +12,7 @@
 #include "mqtt/qmqtt.h"
 #include <QtNetwork>
 #include <QHostAddress>
+#include <QPainter>
 
 
 QT_BEGIN_NAMESPACE

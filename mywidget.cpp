@@ -12,10 +12,18 @@ myWidget::myWidget(QWidget *parent)
     InitMQTT();
 
     QPixmap backgroundPixmap(":/prefix1/images1.jpg");
-       QPalette palette;
-       palette.setBrush(QPalette::Background, QBrush(backgroundPixmap.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-       ui->page->setAutoFillBackground(true);
-       ui->page->setPalette(palette);
+    QPixmap transparentBackground(backgroundPixmap.size());
+    transparentBackground.fill(Qt::transparent);
+
+    QPainter painter(&transparentBackground);
+    painter.setOpacity(0.6); // 设置透明度为60%
+    painter.drawPixmap(0, 0, backgroundPixmap);
+    painter.end();
+
+    QPalette palette;
+    palette.setBrush(QPalette::Background, QBrush(transparentBackground.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+    ui->page->setAutoFillBackground(true);
+    ui->page->setPalette(palette);
 
     connect(ui->addButton,&QPushButton::clicked,this,&myWidget::addButton_clicked);
     connect(ui->deleteButton,&QPushButton::clicked,this,&myWidget::deleteButton_clicked);
@@ -271,6 +279,25 @@ void myWidget::recvMessageSlot(QMQTT::Message message)
        {
                 qDebug() << "Location value:" << payloadString;
                 ui->wbLineEdit->setText(payloadString);
+
+                // 查找并更新数据库中对应的行
+                       QString location = payloadString;
+                       for (int row = 0; row < model->rowCount(); ++row)
+                       {
+                           QModelIndex index = model->index(row, 2); // 书架号列的索引
+                           if (model->data(index).toString() == location)
+                           {
+                               // 更新是否正确列
+                               QModelIndex correctIndex = model->index(row, 3); // 是否正确列的索引
+                               model->setData(correctIndex, "错");
+                               if (!model->submitAll())
+                               {
+                                   qDebug() << "Failed to update record:" << model->lastError();
+                               }
+                               model->select(); // 刷新模型
+                               break;
+                           }
+                       }
        }
 
 }
